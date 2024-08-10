@@ -31,15 +31,25 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   http: ^1.2.2
+  riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  flutter_riverpod: ^2.5.1
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  custom_lint:
+  riverpod_lint: ^2.3.12
+  json_serializable: ^6.8.0
+  build_runner: ^2.4.12
+  freezed: ^2.5.7
+  riverpod_generator: ^2.4.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -58,6 +68,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -89,3 +100,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  # Run scripts defined in a pubspec.yaml just like in node.js with the
+  # run command.
+scripts:
+  build: dart run build_runner build --delete-conflicting-outputs
+  watch: dart run build_runner watch
+  generate_launcher_icons: dart run flutter_launcher_icons -f flutter_launcher_icons.yaml
