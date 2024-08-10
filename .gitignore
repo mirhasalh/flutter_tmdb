@@ -44,3 +44,6 @@ app.*.map.json
 
 # API keys
 api_keys.dart
+
+# lock file
+.lock
