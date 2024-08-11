@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../constants.dart' show kPosterWidth;
 import '../models/movie.dart';
 import '../providers/providers.dart';
 import '../shared/poster.dart';
@@ -102,6 +103,8 @@ class _SimilarSection extends ConsumerWidget {
     final nav = Navigator.of(context);
     final textTheme = Theme.of(context).textTheme;
     var similar = ref.watch(similarProvider(id: id));
+    final style =
+        textTheme.titleMedium!.copyWith(overflow: TextOverflow.ellipsis);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.only(left: 16.0),
@@ -117,7 +120,7 @@ class _SimilarSection extends ConsumerWidget {
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: SizedBox(
-                            width: 160.0,
+                            width: kPosterWidth,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -136,7 +139,10 @@ class _SimilarSection extends ConsumerWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 4.0),
-                                Text(data.results[i].originalTitle!),
+                                Text(
+                                  data.results[i].originalTitle!,
+                                  style: style,
+                                ),
                                 Text.rich(
                                   TextSpan(
                                     text: data.results[i].voteAverage!

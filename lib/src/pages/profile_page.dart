@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/account.dart';
@@ -24,9 +25,10 @@ class ProfilePage extends StatelessWidget {
           bottom: TabBar(
             tabs: List<Widget>.generate(
               length,
-              (int i) => Tab(
-                child: Text(_getTabName(UserCollection.values[i].name)),
-              ),
+              (int i) {
+                final name = UserCollection.values[i].name;
+                return Tab(child: Text(_getTabName(name, context)));
+              },
             ),
           ),
         ),
@@ -40,12 +42,14 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  String _getTabName(String name) {
+  String _getTabName(String name, BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     switch (name) {
       case 'favorite':
-        return 'Favorite';
+        return l10n.favorite;
       case 'watchLater':
-        return 'Watch later';
+        return l10n.watchLater;
       default:
         return 'Undefined';
     }

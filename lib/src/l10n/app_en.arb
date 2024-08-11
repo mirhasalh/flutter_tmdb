@@ -1,0 +1,34 @@
+{
+    "nowPlaying": "Now playing",
+    "@nowPlaying": {
+        "description": "A title for now playing section"
+    },
+    "popular": "Popular",
+    "@popular": {
+        "description": "A title for popular section"
+    },
+    "rating": "rating",
+    "@rating": {
+        "description": "Trailing text for rating"
+    },
+    "favorite": "Favorite",
+    "@favorite": {
+        "description": "A title for favorite section"
+    },
+    "watchLater": "Watch later",
+    "@watchLater": {
+        "description": "A title for watch later section"
+    },
+    "languageSettings": "Language settings",
+    "@languageSettings": {
+        "description": "A title for language settings page"
+    },
+    "english": "English",
+    "@english": {
+        "description": "English language name"
+    },
+    "indonesian": "Indonesian",
+    "@indonesian": {
+        "description": "Indonesian language name"
+    }
+}

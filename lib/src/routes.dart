@@ -23,6 +23,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       final args = settings.arguments as ProfileArgs;
       return MaterialPageRoute(
           builder: (_) => ProfilePage(account: args.account));
+    case '/language-settings':
+      final args = settings.arguments as LanguageArgs;
+      return MaterialPageRoute(
+          builder: (_) => LanguageSettingsPage(langCode: args.langCode));
     default:
       return MaterialPageRoute(
         builder: (_) => Material(

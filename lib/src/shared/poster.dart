@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../constants.dart' show kPosterWidth;
+
 class Poster extends StatelessWidget {
   const Poster({
     super.key,
@@ -24,15 +26,18 @@ class Poster extends StatelessWidget {
 
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: GestureDetector(
-            onTap: onPoster,
-            child: Hero(
-              tag: tag,
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: src,
+        SizedBox(
+          width: kPosterWidth,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            child: GestureDetector(
+              onTap: onPoster,
+              child: Hero(
+                tag: tag,
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: src,
+                ),
               ),
             ),
           ),

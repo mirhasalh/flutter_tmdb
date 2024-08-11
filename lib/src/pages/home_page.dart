@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../constants.dart' show kPosterWidth;
 import '../models/config_images.dart';
 import '../providers/providers.dart';
 import '../shared/poster.dart';
 import 'details_page.dart' show DetailsArgs;
+import 'language_settings_page.dart' show LanguageArgs;
 import 'profile_page.dart' show ProfileArgs;
 
 class HomePage extends ConsumerStatefulWidget {
@@ -26,11 +29,13 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final nav = Navigator.of(context);
     final textTheme = Theme.of(context).textTheme;
     var account = ref.watch(accountProvider);
     var nowPlaying = ref.watch(nowPlayingProvider);
     final base = '${widget.images.secureBaseUrl}';
+    final langCode = '${Localizations.localeOf(context)}';
     final style =
         textTheme.titleMedium!.copyWith(overflow: TextOverflow.ellipsis);
 
@@ -58,6 +63,15 @@ class HomePageState extends ConsumerState<HomePage> {
           error: (err, _) => Text('$err'[0].toUpperCase()),
           loading: () => const SizedBox.shrink(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => nav.pushNamed(
+              '/language-settings',
+              arguments: LanguageArgs(langCode: langCode),
+            ),
+            icon: const Icon(Icons.language),
+          ),
+        ],
       ),
       body: nowPlaying.when(
         data: (data) {
@@ -72,7 +86,7 @@ class HomePageState extends ConsumerState<HomePage> {
             children: [
               const SizedBox(height: 16.0),
               Text(
-                'Now playing',
+                l10n.nowPlaying,
                 style:
                     textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -86,7 +100,7 @@ class HomePageState extends ConsumerState<HomePage> {
                     (int i) => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: SizedBox(
-                        width: 160.0,
+                        width: kPosterWidth,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -112,7 +126,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                 style: textTheme.titleMedium,
                                 children: [
                                   TextSpan(
-                                    text: ' popularity',
+                                    text: ' ${l10n.rating}',
                                     style: textTheme.bodySmall,
                                   )
                                 ],
@@ -127,7 +141,7 @@ class HomePageState extends ConsumerState<HomePage> {
               ),
               const SizedBox(height: 16.0),
               Text(
-                'Popular',
+                l10n.popular,
                 style:
                     textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -141,7 +155,7 @@ class HomePageState extends ConsumerState<HomePage> {
                     (int i) => Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: SizedBox(
-                        width: 160.0,
+                        width: kPosterWidth,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -168,7 +182,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                 style: textTheme.titleMedium,
                                 children: [
                                   TextSpan(
-                                    text: ' popularity',
+                                    text: ' ${l10n.rating}',
                                     style: textTheme.bodySmall,
                                   )
                                 ],
