@@ -18,13 +18,14 @@ Future<Account> account(AccountRef ref) async {
 }
 
 @riverpod
-Future<Favorite> favorite(FavoriteRef ref) async {
-  final favorite = await getFavorite();
-  return favorite;
+Future<Movies> movies(MoviesRef ref,
+    {required UserCollection collection}) async {
+  final movies = await getMovies(collection);
+  return movies;
 }
 
 @riverpod
-Future<WatchList> watchList(WatchListRef ref) async {
-  final watchList = getWatchList();
-  return watchList;
+Future<Movies> similar(SimilarRef ref, {required int id}) async {
+  final similar = await getSimilar(id);
+  return similar;
 }

@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/account.dart';
 import '../providers/providers.dart';
-
-enum UserCollection { favorite, watchLater }
+import '../tmdb_apis.dart' show UserCollection;
 
 class ProfilePage extends StatelessWidget {
   static const routeName = '/profile';
@@ -31,10 +30,12 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
         ),
-        body: const TabBarView(children: <Widget>[
-          _FavoriteSection(),
-          _WatchListSection(),
-        ]),
+        body: const TabBarView(
+          children: <Widget>[
+            _FavoriteSection(),
+            _WatchListSection(),
+          ],
+        ),
       ),
     );
   }
@@ -62,7 +63,8 @@ class _FavoriteSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var favorite = ref.watch(favoriteProvider);
+    var favorite =
+        ref.watch(moviesProvider(collection: UserCollection.favorite));
 
     return favorite.when(
       data: (data) => data.results.isEmpty
@@ -84,7 +86,8 @@ class _WatchListSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var watchList = ref.watch(watchListProvider);
+    var watchList =
+        ref.watch(moviesProvider(collection: UserCollection.watchLater));
 
     return watchList.when(
       data: (data) => data.results.isEmpty

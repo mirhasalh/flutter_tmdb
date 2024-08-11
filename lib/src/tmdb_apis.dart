@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import '../api_keys.dart';
 import 'models/models.dart';
 
+enum UserCollection { favorite, watchLater }
+
 Future<void> getConfiguration({
   required Function(ConfigImages) onSuccess,
   required Function(int) onError,
@@ -63,30 +65,20 @@ Future<Account> accountDetails() async {
   return Account.fromJson(data);
 }
 
-Future<Favorite> getFavorite() async {
-  const base = 'https://api.themoviedb.org';
-  const path = '/favorite/movies';
-
-  final url = Uri.parse('$base/3/account/$kRequestToken$path');
-
-  final headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer $kSessionToken',
-  };
-
-  final res = await http.get(url, headers: headers);
-
-  if (res.statusCode != 200) throw Exception('Failed to load');
-
-  final data = json.decode(res.body);
-
-  return Favorite.fromJson(data);
+String _getPath(UserCollection collection) {
+  switch (collection) {
+    case UserCollection.favorite:
+      return '/favorite/movies';
+    case UserCollection.watchLater:
+      return '/watchlist/movies';
+    default:
+      return '/watchlist/movies';
+  }
 }
 
-Future<WatchList> getWatchList() async {
+Future<Movies> getMovies(UserCollection collection) async {
   const base = 'https://api.themoviedb.org';
-  const path = '/watchlist/movies';
+  final path = _getPath(collection);
 
   final url = Uri.parse('$base/3/account/$kRequestToken$path');
 
@@ -102,5 +94,25 @@ Future<WatchList> getWatchList() async {
 
   final data = json.decode(res.body);
 
-  return WatchList.fromJson(data);
+  return Movies.fromJson(data);
+}
+
+Future<Movies> getSimilar(int id) async {
+  const base = 'https://api.themoviedb.org';
+
+  final url = Uri.parse('$base/3/movie/$id/similar');
+
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer $kSessionToken',
+  };
+
+  final res = await http.get(url, headers: headers);
+
+  if (res.statusCode != 200) throw Exception('Failed to load');
+
+  final data = json.decode(res.body);
+
+  return Movies.fromJson(data);
 }

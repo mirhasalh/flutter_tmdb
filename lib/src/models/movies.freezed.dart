@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'favorite.dart';
+part of 'movies.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Favorite _$FavoriteFromJson(Map<String, dynamic> json) {
-  return _Favorite.fromJson(json);
+Movies _$MoviesFromJson(Map<String, dynamic> json) {
+  return _Movies.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Favorite {
+mixin _$Movies {
   int? get page => throw _privateConstructorUsedError;
   List<Movie> get results => throw _privateConstructorUsedError;
   @JsonKey(name: 'total_pages')
@@ -27,20 +27,19 @@ mixin _$Favorite {
   @JsonKey(name: 'total_results')
   int? get totalResults => throw _privateConstructorUsedError;
 
-  /// Serializes this Favorite to a JSON map.
+  /// Serializes this Movies to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Favorite
+  /// Create a copy of Movies
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $FavoriteCopyWith<Favorite> get copyWith =>
-      throw _privateConstructorUsedError;
+  $MoviesCopyWith<Movies> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FavoriteCopyWith<$Res> {
-  factory $FavoriteCopyWith(Favorite value, $Res Function(Favorite) then) =
-      _$FavoriteCopyWithImpl<$Res, Favorite>;
+abstract class $MoviesCopyWith<$Res> {
+  factory $MoviesCopyWith(Movies value, $Res Function(Movies) then) =
+      _$MoviesCopyWithImpl<$Res, Movies>;
   @useResult
   $Res call(
       {int? page,
@@ -50,16 +49,16 @@ abstract class $FavoriteCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FavoriteCopyWithImpl<$Res, $Val extends Favorite>
-    implements $FavoriteCopyWith<$Res> {
-  _$FavoriteCopyWithImpl(this._value, this._then);
+class _$MoviesCopyWithImpl<$Res, $Val extends Movies>
+    implements $MoviesCopyWith<$Res> {
+  _$MoviesCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Favorite
+  /// Create a copy of Movies
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -91,11 +90,10 @@ class _$FavoriteCopyWithImpl<$Res, $Val extends Favorite>
 }
 
 /// @nodoc
-abstract class _$$FavoriteImplCopyWith<$Res>
-    implements $FavoriteCopyWith<$Res> {
-  factory _$$FavoriteImplCopyWith(
-          _$FavoriteImpl value, $Res Function(_$FavoriteImpl) then) =
-      __$$FavoriteImplCopyWithImpl<$Res>;
+abstract class _$$MoviesImplCopyWith<$Res> implements $MoviesCopyWith<$Res> {
+  factory _$$MoviesImplCopyWith(
+          _$MoviesImpl value, $Res Function(_$MoviesImpl) then) =
+      __$$MoviesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -106,14 +104,14 @@ abstract class _$$FavoriteImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$FavoriteImplCopyWithImpl<$Res>
-    extends _$FavoriteCopyWithImpl<$Res, _$FavoriteImpl>
-    implements _$$FavoriteImplCopyWith<$Res> {
-  __$$FavoriteImplCopyWithImpl(
-      _$FavoriteImpl _value, $Res Function(_$FavoriteImpl) _then)
+class __$$MoviesImplCopyWithImpl<$Res>
+    extends _$MoviesCopyWithImpl<$Res, _$MoviesImpl>
+    implements _$$MoviesImplCopyWith<$Res> {
+  __$$MoviesImplCopyWithImpl(
+      _$MoviesImpl _value, $Res Function(_$MoviesImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Favorite
+  /// Create a copy of Movies
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -123,7 +121,7 @@ class __$$FavoriteImplCopyWithImpl<$Res>
     Object? totalPages = freezed,
     Object? totalResults = freezed,
   }) {
-    return _then(_$FavoriteImpl(
+    return _then(_$MoviesImpl(
       page: freezed == page
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
@@ -146,16 +144,16 @@ class __$$FavoriteImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$FavoriteImpl implements _Favorite {
-  const _$FavoriteImpl(
+class _$MoviesImpl implements _Movies {
+  const _$MoviesImpl(
       {required this.page,
       required final List<Movie> results,
       @JsonKey(name: 'total_pages') required this.totalPages,
       @JsonKey(name: 'total_results') required this.totalResults})
       : _results = results;
 
-  factory _$FavoriteImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FavoriteImplFromJson(json);
+  factory _$MoviesImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MoviesImplFromJson(json);
 
   @override
   final int? page;
@@ -176,14 +174,14 @@ class _$FavoriteImpl implements _Favorite {
 
   @override
   String toString() {
-    return 'Favorite(page: $page, results: $results, totalPages: $totalPages, totalResults: $totalResults)';
+    return 'Movies(page: $page, results: $results, totalPages: $totalPages, totalResults: $totalResults)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavoriteImpl &&
+            other is _$MoviesImpl &&
             (identical(other.page, page) || other.page == page) &&
             const DeepCollectionEquality().equals(other._results, _results) &&
             (identical(other.totalPages, totalPages) ||
@@ -197,32 +195,31 @@ class _$FavoriteImpl implements _Favorite {
   int get hashCode => Object.hash(runtimeType, page,
       const DeepCollectionEquality().hash(_results), totalPages, totalResults);
 
-  /// Create a copy of Favorite
+  /// Create a copy of Movies
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$FavoriteImplCopyWith<_$FavoriteImpl> get copyWith =>
-      __$$FavoriteImplCopyWithImpl<_$FavoriteImpl>(this, _$identity);
+  _$$MoviesImplCopyWith<_$MoviesImpl> get copyWith =>
+      __$$MoviesImplCopyWithImpl<_$MoviesImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FavoriteImplToJson(
+    return _$$MoviesImplToJson(
       this,
     );
   }
 }
 
-abstract class _Favorite implements Favorite {
-  const factory _Favorite(
+abstract class _Movies implements Movies {
+  const factory _Movies(
           {required final int? page,
           required final List<Movie> results,
           @JsonKey(name: 'total_pages') required final int? totalPages,
           @JsonKey(name: 'total_results') required final int? totalResults}) =
-      _$FavoriteImpl;
+      _$MoviesImpl;
 
-  factory _Favorite.fromJson(Map<String, dynamic> json) =
-      _$FavoriteImpl.fromJson;
+  factory _Movies.fromJson(Map<String, dynamic> json) = _$MoviesImpl.fromJson;
 
   @override
   int? get page;
@@ -235,10 +232,10 @@ abstract class _Favorite implements Favorite {
   @JsonKey(name: 'total_results')
   int? get totalResults;
 
-  /// Create a copy of Favorite
+  /// Create a copy of Movies
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FavoriteImplCopyWith<_$FavoriteImpl> get copyWith =>
+  _$$MoviesImplCopyWith<_$MoviesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

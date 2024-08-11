@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/config_images.dart';
 import '../providers/providers.dart';
+import '../shared/poster.dart';
 import 'details_page.dart' show DetailsArgs;
 import 'profile_page.dart' show ProfileArgs;
 
@@ -30,6 +31,8 @@ class HomePageState extends ConsumerState<HomePage> {
     var account = ref.watch(accountProvider);
     var nowPlaying = ref.watch(nowPlayingProvider);
     final base = '${widget.images.secureBaseUrl}';
+    final style =
+        textTheme.titleMedium!.copyWith(overflow: TextOverflow.ellipsis);
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +90,7 @@ class HomePageState extends ConsumerState<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _MoviePoster(
+                            Poster(
                               baseUrl: base,
                               path: toShow[i].posterPath!,
                               onOptions: () {},
@@ -97,7 +100,7 @@ class HomePageState extends ConsumerState<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 4.0),
-                            Text(toShow[i].originalTitle!),
+                            Text(toShow[i].originalTitle!, style: style),
                             Text.rich(
                               TextSpan(
                                 text: toShow[i].voteAverage!.toStringAsFixed(1),
@@ -137,7 +140,7 @@ class HomePageState extends ConsumerState<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _MoviePoster(
+                            Poster(
                               baseUrl: base,
                               path: popular[i].posterPath!,
                               onOptions: () {},
@@ -147,7 +150,7 @@ class HomePageState extends ConsumerState<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 4.0),
-                            Text(popular[i].originalTitle!),
+                            Text(popular[i].originalTitle!, style: style),
                             Text.rich(
                               TextSpan(
                                 text:
@@ -184,55 +187,4 @@ class HomeArgs {
   const HomeArgs(this.images);
 
   final ConfigImages images;
-}
-
-class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({
-    required this.baseUrl,
-    required this.path,
-    required this.onOptions,
-    required this.onPoster,
-  });
-
-  final String path;
-  final String baseUrl;
-  final VoidCallback onOptions;
-  final VoidCallback onPoster;
-
-  @override
-  Widget build(BuildContext context) {
-    final src = '$baseUrl/original$path';
-    final colors = Theme.of(context).colorScheme;
-
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: GestureDetector(
-            onTap: onPoster,
-            child: Image.network(src),
-          ),
-        ),
-        Positioned(
-          top: 0.0,
-          right: 0.0,
-          child: IconButton(
-            style: IconButton.styleFrom(
-              backgroundColor: colors.surface.withAlpha(50),
-              foregroundColor: colors.onSurface,
-            ),
-            constraints: const BoxConstraints(
-              minWidth: 20.0,
-              minHeight: 20.0,
-              maxHeight: 50.0,
-              maxWidth: 50.0,
-            ),
-            padding: const EdgeInsets.all(4.0),
-            onPressed: onOptions,
-            icon: const Icon(Icons.favorite_border),
-          ),
-        )
-      ],
-    );
-  }
 }
