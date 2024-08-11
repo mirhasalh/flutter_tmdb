@@ -5,6 +5,7 @@ import 'package:transparent_image/transparent_image.dart';
 import '../models/movie.dart';
 import '../providers/providers.dart';
 import '../shared/poster.dart';
+import 'poster_page.dart' show PosterArgs;
 
 class DetailsPage extends StatelessWidget {
   static const routeName = '/details';
@@ -18,6 +19,7 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final src = '$baseUrl/original/${movie.posterPath}';
+    final nav = Navigator.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,9 +44,18 @@ class DetailsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image: src,
+          GestureDetector(
+            onTap: () => nav.pushNamed(
+              '/poster',
+              arguments: PosterArgs(baseUrl, movie.posterPath!),
+            ),
+            child: Hero(
+              tag: movie.posterPath!,
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: src,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 12.0),

@@ -14,6 +14,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/home':
       final args = settings.arguments as HomeArgs;
       return MaterialPageRoute(builder: (_) => HomePage(images: args.images));
+    case '/poster':
+      final args = settings.arguments as PosterArgs;
+      return MaterialPageRoute(
+          builder: (_) => PosterPage(baseUrl: args.baseUrl, path: args.path));
     case '/profile':
       final args = settings.arguments as ProfileArgs;
       return MaterialPageRoute(
