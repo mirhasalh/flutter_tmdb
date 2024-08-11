@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
+import 'package:http/http.dart' show get;
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PosterPage extends StatelessWidget {
@@ -27,12 +30,12 @@ class PosterPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () => _onSaveImageToDevice(
+            onPressed: () => _onSaveImage(
               baseUrl: baseUrl,
               posterPath: path,
               onSaved: (v) {
                 final msg = ScaffoldMessenger.of(context);
-                if (v) {
+                if (v != null) {
                   msg.showSnackBar(
                       const SnackBar(content: Text('Saved to gallery')));
                 } else {
@@ -53,13 +56,22 @@ class PosterPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onSaveImageToDevice({
+  Future<void> _onSaveImage({
     required String baseUrl,
     required String posterPath,
-    required Function(bool) onSaved,
+    required Function(dynamic) onSaved,
   }) async {
-    String path = '$baseUrl/original$posterPath';
-    GallerySaver.saveImage(path).then((v) => onSaved(v!));
+    String url = '$baseUrl/original$posterPath';
+
+    final res = await get(Uri.parse(url));
+
+    final data = await ImageGallerySaver.saveImage(
+      Uint8List.fromList(res.bodyBytes),
+      quality: 60,
+      name: posterPath.substring(1),
+    );
+
+    onSaved(data);
   }
 }
 
