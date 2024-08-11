@@ -4,12 +4,14 @@ import 'package:transparent_image/transparent_image.dart';
 class Poster extends StatelessWidget {
   const Poster({
     super.key,
+    required this.tag,
     required this.baseUrl,
     required this.path,
     required this.onOptions,
     required this.onPoster,
   });
 
+  final String tag;
   final String path;
   final String baseUrl;
   final VoidCallback onOptions;
@@ -26,9 +28,12 @@ class Poster extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           child: GestureDetector(
             onTap: onPoster,
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: src,
+            child: Hero(
+              tag: tag,
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: src,
+              ),
             ),
           ),
         ),

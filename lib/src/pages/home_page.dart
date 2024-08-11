@@ -91,12 +91,17 @@ class HomePageState extends ConsumerState<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Poster(
+                              tag: 'toShow-$i-${toShow[i].id!}',
                               baseUrl: base,
                               path: toShow[i].posterPath!,
                               onOptions: () {},
                               onPoster: () => nav.pushNamed(
                                 '/details',
-                                arguments: DetailsArgs(base, toShow[i]),
+                                arguments: DetailsArgs(
+                                  'toShow-$i-${toShow[i].id!}',
+                                  base,
+                                  toShow[i],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 4.0),
@@ -141,12 +146,17 @@ class HomePageState extends ConsumerState<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Poster(
+                              tag: 'popular-$i-${popular[i].id!}',
                               baseUrl: base,
                               path: popular[i].posterPath!,
                               onOptions: () {},
                               onPoster: () => nav.pushNamed(
                                 '/details',
-                                arguments: DetailsArgs(base, popular[i]),
+                                arguments: DetailsArgs(
+                                  'popular-$i-${popular[i].id!}',
+                                  base,
+                                  popular[i],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 4.0),

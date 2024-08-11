@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../models/movie.dart';
 import '../providers/providers.dart';
@@ -10,8 +9,14 @@ import 'poster_page.dart' show PosterArgs;
 class DetailsPage extends StatelessWidget {
   static const routeName = '/details';
 
-  const DetailsPage({super.key, required this.baseUrl, required this.movie});
+  const DetailsPage({
+    super.key,
+    required this.tag,
+    required this.baseUrl,
+    required this.movie,
+  });
 
+  final String tag;
   final String baseUrl;
   final Movie movie;
 
@@ -47,14 +52,11 @@ class DetailsPage extends StatelessWidget {
           GestureDetector(
             onTap: () => nav.pushNamed(
               '/poster',
-              arguments: PosterArgs(baseUrl, movie.posterPath!),
+              arguments: PosterArgs(tag, baseUrl, movie.posterPath!),
             ),
             child: Hero(
-              tag: movie.posterPath!,
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: src,
-              ),
+              tag: tag,
+              child: Image.network(src),
             ),
           ),
           Padding(
@@ -82,8 +84,9 @@ class DetailsPage extends StatelessWidget {
 }
 
 class DetailsArgs {
-  const DetailsArgs(this.baseUrl, this.movie);
+  const DetailsArgs(this.tag, this.baseUrl, this.movie);
 
+  final String tag;
   final String baseUrl;
   final Movie movie;
 }
@@ -119,13 +122,17 @@ class _SimilarSection extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Poster(
+                                  tag: '$i-${data.results[i].id!}',
                                   baseUrl: baseUrl,
                                   path: data.results[i].posterPath!,
                                   onOptions: () {},
                                   onPoster: () => nav.pushNamed(
                                     '/details',
-                                    arguments:
-                                        DetailsArgs(baseUrl, data.results[i]),
+                                    arguments: DetailsArgs(
+                                      '$i-${data.results[i].id!}',
+                                      baseUrl,
+                                      data.results[i],
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4.0),
