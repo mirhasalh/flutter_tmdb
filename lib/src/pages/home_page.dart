@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/config_images.dart';
 import '../providers/providers.dart';
+import 'details_page.dart' show DetailsArgs;
+import 'profile_page.dart' show ProfileArgs;
 
 class HomePage extends ConsumerStatefulWidget {
   static const routeName = '/home';
@@ -23,12 +25,36 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final nav = Navigator.of(context);
     final textTheme = Theme.of(context).textTheme;
+    var account = ref.watch(accountProvider);
     var nowPlaying = ref.watch(nowPlayingProvider);
+    final base = '${widget.images.secureBaseUrl}';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('For you'),
+        centerTitle: false,
+        title: account.when(
+          data: (data) {
+            final args = ProfileArgs(data);
+            return data.avatar!.tmdb!.avatarPath != null
+                ? GestureDetector(
+                    onTap: () => nav.pushNamed('/profile', arguments: args),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          '$base/original${data.avatar!.tmdb!.avatarPath}'),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () => nav.pushNamed('/profile', arguments: args),
+                    child: CircleAvatar(
+                      child: Text(data.username![0].toUpperCase()),
+                    ),
+                  );
+          },
+          error: (err, _) => Text('$err'[0].toUpperCase()),
+          loading: () => const SizedBox.shrink(),
+        ),
       ),
       body: nowPlaying.when(
         data: (data) {
@@ -37,12 +63,16 @@ class HomePageState extends ConsumerState<HomePage> {
           var sorted = filtered.toList()
             ..sort((a, b) => b.voteAverage!.compareTo(a.voteAverage!));
           var popular = sorted.length > 20 ? sorted.sublist(0, 20) : sorted;
-          final baseUrl = '${widget.images.baseUrl}/original';
+
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: [
               const SizedBox(height: 16.0),
-              Text('Now playing', style: textTheme.titleMedium),
+              Text(
+                'Now playing',
+                style:
+                    textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 12.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -58,9 +88,13 @@ class HomePageState extends ConsumerState<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _MoviePoster(
-                              baseUrl: baseUrl,
+                              baseUrl: base,
                               path: toShow[i].posterPath!,
-                              onPressed: () {},
+                              onOptions: () {},
+                              onPoster: () => nav.pushNamed(
+                                '/details',
+                                arguments: DetailsArgs(base, toShow[i]),
+                              ),
                             ),
                             const SizedBox(height: 4.0),
                             Text(toShow[i].originalTitle!),
@@ -84,7 +118,11 @@ class HomePageState extends ConsumerState<HomePage> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              Text('Popular', style: textTheme.titleMedium),
+              Text(
+                'Popular',
+                style:
+                    textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 12.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -100,9 +138,13 @@ class HomePageState extends ConsumerState<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _MoviePoster(
-                              baseUrl: baseUrl,
+                              baseUrl: base,
                               path: popular[i].posterPath!,
-                              onPressed: () {},
+                              onOptions: () {},
+                              onPoster: () => nav.pushNamed(
+                                '/details',
+                                arguments: DetailsArgs(base, popular[i]),
+                              ),
                             ),
                             const SizedBox(height: 4.0),
                             Text(popular[i].originalTitle!),
@@ -148,23 +190,28 @@ class _MoviePoster extends StatelessWidget {
   const _MoviePoster({
     required this.baseUrl,
     required this.path,
-    required this.onPressed,
+    required this.onOptions,
+    required this.onPoster,
   });
 
   final String path;
   final String baseUrl;
-  final VoidCallback onPressed;
+  final VoidCallback onOptions;
+  final VoidCallback onPoster;
 
   @override
   Widget build(BuildContext context) {
-    final src = '$baseUrl/$path';
+    final src = '$baseUrl/original$path';
     final colors = Theme.of(context).colorScheme;
 
     return Stack(
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: Image.network(src),
+          child: GestureDetector(
+            onTap: onPoster,
+            child: Image.network(src),
+          ),
         ),
         Positioned(
           top: 0.0,
@@ -181,7 +228,7 @@ class _MoviePoster extends StatelessWidget {
               maxWidth: 50.0,
             ),
             padding: const EdgeInsets.all(4.0),
-            onPressed: onPressed,
+            onPressed: onOptions,
             icon: const Icon(Icons.favorite_border),
           ),
         )

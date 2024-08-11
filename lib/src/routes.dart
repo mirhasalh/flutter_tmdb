@@ -7,12 +7,17 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case '/':
       return MaterialPageRoute(builder: (_) => const AuthPage());
     case '/details':
-      return MaterialPageRoute(builder: (_) => const DetailsPage());
+      final args = settings.arguments as DetailsArgs;
+      return MaterialPageRoute(
+          builder: (_) =>
+              DetailsPage(baseUrl: args.baseUrl, movie: args.movie));
     case '/home':
       final args = settings.arguments as HomeArgs;
       return MaterialPageRoute(builder: (_) => HomePage(images: args.images));
     case '/profile':
-      return MaterialPageRoute(builder: (_) => const ProfilePage());
+      final args = settings.arguments as ProfileArgs;
+      return MaterialPageRoute(
+          builder: (_) => ProfilePage(account: args.account));
     default:
       return MaterialPageRoute(
         builder: (_) => Material(
