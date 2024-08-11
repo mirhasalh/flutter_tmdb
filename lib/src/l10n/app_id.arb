@@ -6,5 +6,8 @@
     "watchLater": "Tonton nanti",
     "languageSettings": "Pengaturan bahasa",
     "english": "Inggris",
-    "indonesian": "indonesia"
+    "indonesian": "indonesia",
+    "system": "Sistem",
+    "light": "Terang",
+    "dark": "Gelap"
 }

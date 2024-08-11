@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants.dart' show kPosterWidth;
 import '../models/config_images.dart';
 import '../providers/providers.dart';
+import '../providers/theme_provider.dart';
 import '../shared/poster.dart';
 import 'details_page.dart' show DetailsArgs;
 import 'language_settings_page.dart' show LanguageArgs;
@@ -36,6 +37,7 @@ class HomePageState extends ConsumerState<HomePage> {
     var nowPlaying = ref.watch(nowPlayingProvider);
     final base = '${widget.images.secureBaseUrl}';
     final langCode = '${Localizations.localeOf(context)}';
+    final brightness = Theme.of(context).brightness.name;
     final style =
         textTheme.titleMedium!.copyWith(overflow: TextOverflow.ellipsis);
 
@@ -64,6 +66,11 @@ class HomePageState extends ConsumerState<HomePage> {
           loading: () => const SizedBox.shrink(),
         ),
         actions: [
+          IconButton(
+            onPressed: () => _showThemeSettings(),
+            icon:
+                Icon(brightness == 'dark' ? Icons.dark_mode : Icons.light_mode),
+          ),
           IconButton(
             onPressed: () => nav.pushNamed(
               '/language-settings',
@@ -205,10 +212,77 @@ class HomePageState extends ConsumerState<HomePage> {
       ),
     );
   }
+
+  void _showThemeSettings() {
+    final themeMode = ref.watch(themeProvider).themeMode;
+    final nav = Navigator.of(context);
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _DragHandler(),
+          ...ThemeMode.values.map(
+            (v) => RadioListTile(
+              value: v,
+              groupValue: themeMode,
+              onChanged: (v) {
+                ref.read(themeProvider).setThemeMode(v!);
+                nav.pop();
+              },
+              title: Text(translate(v.name)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String translate(String name) {
+    final l10n = AppLocalizations.of(context)!;
+
+    switch (name) {
+      case 'system':
+        return l10n.system;
+      case 'light':
+        return l10n.light;
+      case 'dark':
+        return l10n.dark;
+      default:
+        return 'n/a';
+    }
+  }
 }
 
 class HomeArgs {
   const HomeArgs(this.images);
 
   final ConfigImages images;
+}
+
+class _DragHandler extends StatelessWidget {
+  const _DragHandler();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            height: 4.0,
+            width: 60.0,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(9.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

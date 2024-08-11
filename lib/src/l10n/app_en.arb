@@ -30,5 +30,17 @@
     "indonesian": "Indonesian",
     "@indonesian": {
         "description": "Indonesian language name"
+    },
+    "system": "System",
+    "@system": {
+        "description": "A title for system list tile"
+    },
+    "light": "Light",
+    "@light": {
+        "description": "A title for light list tile"
+    },
+    "dark": "Dark",
+    "@dark": {
+        "description": "A title for dark list tile"
     }
 }
