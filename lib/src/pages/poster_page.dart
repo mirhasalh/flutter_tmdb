@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:gal/gal.dart';
 import 'package:http/http.dart' show get;
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PosterPage extends StatelessWidget {
@@ -35,7 +36,7 @@ class PosterPage extends StatelessWidget {
               posterPath: path,
               onSaved: (v) {
                 final msg = ScaffoldMessenger.of(context);
-                if (v != null) {
+                if (v == 'success') {
                   msg.showSnackBar(
                       const SnackBar(content: Text('Saved to gallery')));
                 } else {
@@ -59,19 +60,20 @@ class PosterPage extends StatelessWidget {
   Future<void> _onSaveImage({
     required String baseUrl,
     required String posterPath,
-    required Function(dynamic) onSaved,
+    required Function(String) onSaved,
   }) async {
     String url = '$baseUrl/original$posterPath';
-
-    final res = await get(Uri.parse(url));
-
-    final data = await ImageGallerySaver.saveImage(
-      Uint8List.fromList(res.bodyBytes),
-      quality: 60,
-      name: posterPath.substring(1),
-    );
-
-    onSaved(data);
+    try {
+      final res = await get(Uri.parse(url));
+      final data = Uint8List.fromList(res.bodyBytes);
+      final imagePath = '${Directory.systemTemp.path}$posterPath';
+      final file = File(imagePath);
+      await file.writeAsBytes(data);
+      await Gal.putImage(file.path);
+      onSaved('success');
+    } catch (e) {
+      onSaved('$e');
+    }
   }
 }
 
